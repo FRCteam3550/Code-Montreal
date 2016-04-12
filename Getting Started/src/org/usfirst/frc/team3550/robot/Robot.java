@@ -23,7 +23,8 @@ public class Robot extends IterativeRobot {
 	SpeedController armMotorController;
 	SpeedController MotorLateral1;
 	SpeedController MotorLateral2;
-	DigitalInput limitSwitch3, limitSwitch4, limitSwitch5, limitSwitchHaut, limitSwitchBas;	
+	SpeedController MoteurRamasseur; 
+	DigitalInput limitSwitch3, limitSwitch4, limitSwitch5, limitSwitchHaut, limitSwitchBas, limitSRamasseur;	
 	
 	
 	final double SPEED_ARMCONTROLLER = 0.7;
@@ -50,8 +51,9 @@ public class Robot extends IterativeRobot {
     	limitSwitch3 = new DigitalInput(3);
     	limitSwitchHaut = new DigitalInput (1);
     	limitSwitchBas = new DigitalInput (8);
-    	
-    	  SmartDashboard.putBoolean("limitSwitchHaut", false);
+    	limitSRamasseur = new DigitalInput (1);
+    	MoteurRamasseur = new Talon (5);
+    	  SmartDashboard.putBoolean("limit SwitchHaut", false);
           SmartDashboard.putBoolean("limitSwitch3", false);
           SmartDashboard.putBoolean("limitSwitchBas", false);
           
@@ -92,7 +94,7 @@ public class Robot extends IterativeRobot {
 
     /**
      * This function is called periodically during operator control
-     */
+     */ 
     public void teleopPeriodic() {
         myRobot.arcadeDrive(stick);
         SmartDashboard.putBoolean("limitSwitchHaut", limitSwitchHaut.get());
@@ -132,6 +134,17 @@ public class Robot extends IterativeRobot {
         	MotorLateral1.set(0);
         	MotorLateral2.set(0);           
         }
+    
+    
+    
+   
+    
+    if ((stick.getRawButton(1) == true) && (limitSRamasseur.get() == true)) {
+    	MoteurRamasseur.set(0.5);
+    }
+    else ((stick.getRawButton(1) == true) && (limitSRamasseur.get() == false)) {
+    	MoteurRamasseur.set(0);
+    	}
     }
     
     /**
@@ -140,5 +153,5 @@ public class Robot extends IterativeRobot {
     public void testPeriodic() {
     	LiveWindow.run();
     }
-    
+    }
 }
